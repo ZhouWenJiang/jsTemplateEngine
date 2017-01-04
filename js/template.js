@@ -3,6 +3,7 @@
   	var diff = svd.diff
   	var patch = svd.patch
 	var handlers = {};
+	var domElements={};
 	var templateEl;
 	var tree;
 	// function to replace values between double curly braces
@@ -38,18 +39,20 @@
 	}
 	
 	function parse(id,data){
-		if(!templateEl){
-			templateEl=document.getElementById(id).cloneNode(true);	
+		if(!domElements[id]){
+			domElements[id]={};
+			domElements[id].template = document.getElementById(id).cloneNode(true);
 			document.getElementById(id).innerHTML="";
+			domElements[id].tree=el(domElements[id].template.tagName);
 		}
+		var  templateEl= domElements[id].template;
 		var newTree = walk(templateEl,data);
-		if(!tree){
-			tree=el(templateEl.tagName);
-		}
-		var patches = diff(tree,newTree);
-		patch(document.getElementById(id),patches);
+		newTree.countChildren();
 		
-		tree=newTree;
+		var patches = diff(domElements[id].tree,newTree);
+		patch(document.getElementById(id),patches);
+		domElements[id].tree=newTree;
+		
 	}
 	
 	// function to recursively walk the DOM to handle data-repeat attributes

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Template</title>
+		<script type="text/javascript" src="../js/virtualdom.js" ></script>
+		<script type="text/javascript" src="../js/template.js" ></script>
+	</head>
+	<body>
+		<div id="container">
+			<p>All info</p>
+			<ul>
+				<li for="users as user i" id="{user.userId}"><span>{user.name}-{user.age}-{user.sex}</span></li>
+			</ul>
+			<p>Men</p>
+			<ul>
+				<li for="users as user i" id="{user.userId}" if="user.sex">
+					<span >{user.name}-{user.age}-{user.sex}</span>
+				</li>
+			</ul>
+			
+			<p>Women</p>
+			<ul>
+				<li for="users as user i" id="{user.userId}" if="!user.sex">
+					{user.name}-{user.age}-{user.sex}
+				</li>
+			</ul>
+		</div>
+		<hr>
+		<div id="container2">
+			<p>UserName:{name}</p>
+			<label>his brothers</label>
+			<ul>
+				<li for="brothers as brother i">
+					<span>order:{i+1}----->{brother}</span>
+				</li>
+				
+			</ul>
+			
+		</div>
+	</body>
+	<script>
+		var data={users:[{userId:1,"name":"zero",age:33,sex:0},{userId:2,"name":"gray",age:12,sex:0},
+		{userId:3,"name":"zak",age:33,sex:1},{userId:4,"name":"cui",age:33,sex:1},
+		]}
+		render("container",data);
+		
+		var data2={name:'zak',brothers:["zero","gray","cui"]}
+		
+		render("container2",data2);
+		//remove element
+		setTimeout(function(){
+			data.users.pop();
+			render("container",data);
+		},3000);
+		//add element
+		setTimeout(function(){
+			data2.brothers.push("adlay");
+			render("container2",data2);
+		},6000);
+	</script>
+</html>

@@ -169,6 +169,22 @@ Element.prototype.render = function () {
   return el
 }
 
+Element.prototype.countChildren=function(){
+	var count = 0
+	_.each(this.children, function (child, i) {
+    if (child instanceof Element) {
+      count += child.countChildren()
+    } else {
+      //this.children[i] = '' + child
+    }
+    count++
+  })
+	
+	this.count = count
+	
+	return this.count;
+}
+
 module.exports = Element
 
 },{"./util":5}],4:[function(require,module,exports){
